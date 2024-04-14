@@ -1,0 +1,162 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Blind Mail</title>
+
+    <!-- ================= Favicon ================== -->
+    <!-- Standard -->
+    <link rel="shortcut icon" href="http://placehold.it/64.png/000/fff">
+    <!-- Retina iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="144x144" href="http://placehold.it/144.png/000/fff">
+    <!-- Retina iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="114x114" href="http://placehold.it/114.png/000/fff">
+    <!-- Standard iPad Touch Icon-->
+    <link rel="apple-touch-icon" sizes="72x72" href="http://placehold.it/72.png/000/fff">
+    <!-- Standard iPhone Touch Icon-->
+    <link rel="apple-touch-icon" sizes="57x57" href="http://placehold.it/57.png/000/fff">
+
+    <!-- Styles -->
+    <link href="../static/assets/css/lib/font-awesome.min.css" rel="stylesheet">
+    <link href="../static/assets/css/lib/themify-icons.css" rel="stylesheet">
+    <link href="../static/assets/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/css/lib/helper.css" rel="stylesheet">
+    <link href="../static/assets/css/style.css" rel="stylesheet">
+
+<script language="javascript">
+		function myFunction()
+		{
+		var txt=document.getElementById("results").value;
+		document.form1.uname.value=txt;
+		//alert(txt)
+		//document.getElementById("myForm").submit();
+		}
+		
+		/*function test()
+		{
+		alert("ok")
+		}*/
+		
+		function pageLoad()
+		{
+		//Using setTimeout to execute a function after 5 seconds.
+setTimeout(function () {
+   //Redirect with JavaScript
+   startConverting();
+}, 2000);
+		}
+		</script>
+	
+</head>
+
+<body onLoad="pageLoad()" class="bg-info">
+
+{% if st=="1" %}
+<embed src="../static/audio/pass.mp3" autostart="true" hidden="true"></embed></p>
+{% endif %}
+{% if st=="2" %}
+<embed src="../static/audio/login-wrong.mp3" autostart="true" hidden="true"></embed></p>
+{% endif %}
+
+<div id="result"></div>
+	<button onClick="startConverting();"><i class="fa fa-microphone btn btn-danger" aria-hidden="true"></i></button>
+	<script>
+	
+		var result = document.getElementById('result');
+  
+		function startConverting () {
+
+		if('webkitSpeechRecognition' in window) {
+			var speechRecognizer = new webkitSpeechRecognition();
+			speechRecognizer.continuous = true;
+			speechRecognizer.interimResults = true;
+			speechRecognizer.lang = 'en-US';
+			speechRecognizer.start();
+
+			var finalTranscripts = '';
+
+			speechRecognizer.onresult = function(event) {
+				var interimTranscripts = '';
+				for(var i = event.resultIndex; i < event.results.length; i++){
+					var transcript = event.results[i][0].transcript;
+					transcript.replace("\n", "<br>");
+					if(event.results[i].isFinal) {
+						finalTranscripts += transcript;
+						document.form1.res.value=finalTranscripts;
+					}else{
+						interimTranscripts += transcript;
+					}
+				}
+				result.innerHTML = finalTranscripts + '<span style="color: #999">' + interimTranscripts + '</span>';
+			};
+			speechRecognizer.onerror = function (event) {
+
+			};
+			
+			getPost();
+			
+		}else {
+			result.innerHTML = 'Your browser is not supported. Please download Google chrome or Update your Google chrome!!';
+		}	
+		}
+	
+	</script>
+	
+	<script>
+	function getPost()
+	{
+	
+//Using setTimeout to execute a function after 5 seconds.
+setTimeout(function () {
+   //Redirect with JavaScript
+  document.getElementById("myForm").submit(); 
+}, 6000);
+
+}
+</script>
+
+    <div class="unix-login">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="login-content">
+                        <div class="login-logo">
+                            <a href=""><span>Voice Mail</span></a>
+                        </div>
+                        <div class="login-form">
+                            <h4>Login</h4>
+                            <form id="myForm" name="form1" method="post" action="">
+							
+							<div class="row">
+							<div class="col-md-4">
+							<img src="../static/assets/images/bvoice.jpg" class="img-fluid">
+							</div>
+							
+							<div class="col-md-8">
+									<div class="alert-danger">{{msg}}</div>
+								
+									<div class="form-group">
+										<label>Password</label>
+										<input type="password" name="res" id="res" class="form-control" onChange="test()" >
+										
+									</div>
+								   
+									
+									<button type="submit" name="btn" class="btn btn-primary btn-flat m-b-30 m-t-30">Login</button>
+								   
+									
+							</div>
+							</div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
